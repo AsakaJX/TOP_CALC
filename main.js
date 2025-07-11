@@ -19,6 +19,7 @@ const calculator = document.querySelector('.calculator');
 calculator.addEventListener('click', tokenize);
 
 const tokens = [];
+const operations = '/*-+=';
 
 function tokenize(event) {
   if (event.target.nodeName.toLowerCase() !== 'button') {
@@ -27,22 +28,44 @@ function tokenize(event) {
   const token = event.target.textContent;
   console.log('pressed: ' + token);
 
-  const operations = '/*-+';
-
-  if (tokens.length === 0) {
-    tokens.push(token);
-    return;
-  }
-
   if (operations.includes(tokens.at(-1)) && operations.includes(token)) {
     throw Error("you can't use two operations in a row!");
   }
 
-  if (operations.includes(token) || operations.includes(tokens.at(-1))) {
+  const isOperatorExist =
+    tokens.length !== 0
+      ? tokens.reduce(
+          (result, item) =>
+            operations.includes(item) ? (result = true) : result,
+          false
+        )
+      : null;
+
+  if (
+    tokens.length === 0 ||
+    operations.includes(token) ||
+    operations.includes(tokens.at(-1))
+  ) {
+    if (!isOperatorExist && token === '=') {
+      throw Error("there' nothing to evaluate at this point!");
+    }
     tokens.push(token);
   } else {
     tokens[tokens.length - 1] += token;
   }
 
-  console.log(tokens);
+  handleDisplay();
 }
+
+function handleDisplay() {
+  console.log(tokens);
+
+  if (!tokens.includes('=')) {
+    display.textContent = tokens.toString().replaceAll(',', ' ') + '_';
+  }
+}
+
+const equalButton = document.querySelector('#equal');
+equalButton.addEventListener('click', handleEvaluation());
+
+function handleEvaluation() {}
