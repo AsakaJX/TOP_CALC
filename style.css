@@ -1,0 +1,135 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* I STOLE PALETTE FROM 7TV LOL */
+  --secondary: #222222;
+  --secondary-text: #ffffff;
+  --secondary-hover: #252525;
+  --secondary-active: #383838;
+  --secondary-disabled: #202020;
+  --secondary-border: transparent;
+  --primary: white;
+  --primary-text: black;
+  --primary-hover: #f3f3f3;
+  --primary-active: #e0e0e0;
+  --primary-disabled: #bbbbbb;
+  --primary-border: transparent;
+  --bg-dark: #0a0a0a;
+  --bg-medium: #0f0f0f;
+  --bg-light: #141414;
+  --text: #ffffff;
+  --text-light: #9c9c9c;
+  --layout-border: transparent;
+  --border-active: #313131;
+  --store: #aa71ff;
+  --preview: #222222;
+  --danger: #f6412d;
+  --approve: #57ab5a;
+  --rename: #3b82f6;
+  --staff: #ee4865;
+  --staff-bg: #ee48651a;
+  --admin-merge: #b083f0;
+  --admin-unlist: #e0823d;
+
+  font-family: 'Figtree', monospace;
+  font-size: 15px;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--bg-light);
+  color: var(--text);
+}
+
+.calculator {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+
+  width: 250px;
+  height: 100%;
+
+  border: 2px dotted var(--border-active);
+}
+
+.calculator button {
+  background-color: var(--primary);
+  border: 1px solid var(--primary-active);
+  border-radius: 3px;
+
+  height: 60px;
+  /* height: 60px;
+  min-width: 60px; */
+}
+
+.calculator button:hover {
+  cursor: pointer;
+}
+
+.calculator .extra {
+  align-self: center;
+  width: 100%;
+
+  display: flex;
+  flex: 0;
+  /* justify-content: space-between; */
+}
+
+.calculator .extra button {
+  flex: 1;
+}
+
+.calculator .numbers-and-operators {
+  display: flex;
+  width: 100%;
+}
+
+.calculator .main-block {
+  display: flex;
+  flex-flow: row wrap-reverse;
+  flex: 2 1 auto;
+}
+
+.calculator .main-block button {
+  flex: 1 1 60px;
+  min-width: 0;
+}
+
+.calculator .operations {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.calculator .operations button {
+  flex: 1 1 auto;
+}
+
+.calculator .display {
+  height: 50px;
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  padding-left: 5px;
+
+  border: 1px solid var(--border-active);
+}
