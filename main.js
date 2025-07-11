@@ -104,7 +104,9 @@ function handleEquation() {
   let equation = [...tokens];
   const pattern = /[^\w\s,.]/g;
   const indexesOfOperators = [...equation.join('').matchAll(pattern)];
+
   const equationObject = {};
+
   let encounteredError = false;
 
   indexesOfOperators.forEach((item) => {
@@ -122,9 +124,7 @@ function handleEquation() {
     const leftToken = equationObject[operatorIndex].left;
     const rightToken = equationObject[operatorIndex].right;
 
-    if (encounteredError) {
-      return;
-    }
+    if (encounteredError) return;
 
     if (
       isNaN(+leftToken) ||
@@ -155,7 +155,7 @@ function handleEquation() {
 
       default:
         throw Error(
-          'got an unexpected token during handling evaluation process'
+          'got an unexpected token during handling calculation process'
         );
     }
 

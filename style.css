@@ -74,8 +74,7 @@ body {
   border-radius: 3px;
 
   height: 60px;
-  /* height: 60px;
-  min-width: 60px; */
+  font-size: 1.1rem;
 }
 
 .calculator button:hover {
@@ -89,21 +88,25 @@ body {
   display: flex;
   flex: 0;
   /* justify-content: space-between; */
+  gap: 5px;
 }
 
 .calculator .extra button {
   flex: 1;
+  height: 40px;
 }
 
 .calculator .numbers-and-operators {
   display: flex;
   width: 100%;
+  gap: 1px;
 }
 
 .calculator .main-block {
   display: flex;
   flex-flow: row wrap-reverse;
-  flex: 2 1 auto;
+  flex: 1 1 auto;
+  gap: 1px;
 }
 
 .calculator .main-block button {
@@ -114,11 +117,12 @@ body {
 .calculator .operations {
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
+  gap: 1px;
 }
 
 .calculator .operations button {
-  flex: 1 1 auto;
+  flex: 1 0 60px;
 }
 
 .calculator .display {
