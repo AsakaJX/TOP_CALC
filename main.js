@@ -21,6 +21,8 @@ calculator.addEventListener('click', tokenize);
 let tokens = [];
 const operations = '/*-+=';
 
+const dotButton = document.querySelector('#column');
+
 function tokenize(event) {
   if (
     event.target.nodeName.toLowerCase() !== 'button' ||
@@ -30,9 +32,27 @@ function tokenize(event) {
     return;
   }
   const token = event.target.textContent;
+  const isEmpty = tokens.length === 0 ? true : false;
+  const lastToken = !isEmpty ? tokens.length - 1 : -1;
 
   if (operations.includes(tokens.at(-1)) && operations.includes(token)) {
     throw Error("you can't use two operations in a row!");
+  }
+
+  if (
+    token === '.' &&
+    (tokens[lastToken].toString().includes('.') ||
+      operations.includes(tokens[lastToken]))
+  ) {
+    return;
+  }
+
+  if (
+    !isEmpty &&
+    tokens[lastToken].toString()[tokens[lastToken].length - 1] === '.' &&
+    operations.includes(token)
+  ) {
+    throw Error('you should first enter a number after the dot!');
   }
 
   if (result !== null) {
@@ -55,7 +75,7 @@ function tokenize(event) {
     operations.includes(tokens.at(-1))
   ) {
     if (!isOperatorExist && token === '=') {
-      throw Error("there' nothing to evaluate at this point!");
+      throw Error("there' nothing to calculate at this point!");
     }
     if (token !== '=') {
       tokens.push(token);
@@ -64,16 +84,14 @@ function tokenize(event) {
     tokens[tokens.length - 1] += token;
   }
 
-  console.log(tokens);
-
   updateDisplay();
 }
 
-function updateDisplay(result) {
+function updateDisplay(msg) {
   display.textContent = tokens.toString().replaceAll(',', ' ') + '_';
 
-  if (result) {
-    display.textContent = result;
+  if (msg) {
+    display.textContent = msg;
   }
 }
 
@@ -84,9 +102,10 @@ let result = null;
 
 function handleEquation() {
   let equation = [...tokens];
-  const pattern = /[^\w\s]/g;
+  const pattern = /[^\w\s,.]/g;
   const indexesOfOperators = [...equation.join('').matchAll(pattern)];
   const equationObject = {};
+  let encounteredError = false;
 
   indexesOfOperators.forEach((item) => {
     const operatorIndex = item.index;
@@ -102,6 +121,19 @@ function handleEquation() {
 
     const leftToken = equationObject[operatorIndex].left;
     const rightToken = equationObject[operatorIndex].right;
+
+    if (encounteredError) {
+      return;
+    }
+
+    if (
+      isNaN(+leftToken) ||
+      isNaN(+rightToken) ||
+      (+rightToken === 0 && operator === '/')
+    ) {
+      encounteredError = true;
+      return;
+    }
 
     let innerResult = null;
     switch (operator) {
@@ -132,7 +164,11 @@ function handleEquation() {
   });
   result = equation[0];
   tokens = [...equation];
-  updateDisplay(result);
+  if (encounteredError) {
+    updateDisplay('ERROR');
+  } else {
+    updateDisplay(result);
+  }
 }
 
 const clearButton = document.querySelector('#clear');
