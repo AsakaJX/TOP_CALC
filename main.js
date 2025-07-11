@@ -18,20 +18,67 @@ const display = document.querySelector('.display');
 const calculator = document.querySelector('.calculator');
 calculator.addEventListener('click', tokenize);
 
+const keyboard = document.addEventListener('keydown', handleKeyboard);
+
 let tokens = [];
 const operations = '/*-+=';
 
 const dotButton = document.querySelector('#column');
 
-function tokenize(event) {
+function handleKeyboard(event) {
+  const key = event.key;
+
+  switch (key) {
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '0':
+    case '/':
+    case '*':
+    case '-':
+    case '+':
+      tokenize(key, true);
+      break;
+
+    case 'Enter':
+      handleEquation();
+      break;
+
+    case 'Backspace':
+      if (event.ctrlKey) {
+        tokens.pop();
+        updateDisplay();
+      } else {
+        handleBackspace();
+      }
+      break;
+
+    case 'c':
+      clear();
+      clearDisplay();
+      break;
+
+    default:
+      break;
+  }
+}
+
+function tokenize(event, isKeyEvent) {
   if (
-    event.target.nodeName.toLowerCase() !== 'button' ||
-    event.target.id === 'clear' ||
-    event.target.id === 'backspace'
+    !isKeyEvent &&
+    (event.target.nodeName.toLowerCase() !== 'button' ||
+      event.target.id === 'clear' ||
+      event.target.id === 'backspace')
   ) {
     return;
   }
-  const token = event.target.textContent;
+  const token = !isKeyEvent ? event.target.textContent : event;
   const isEmpty = tokens.length === 0 ? true : false;
   const lastToken = !isEmpty ? tokens.length - 1 : -1;
 
