@@ -46,6 +46,11 @@ function handleKeyboard(event) {
       tokenize(key, true);
       break;
 
+    case '.':
+    case ',':
+      tokenize('.', true);
+      break;
+
     case 'Enter':
       handleEquation();
       break;
