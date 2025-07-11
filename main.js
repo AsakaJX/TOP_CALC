@@ -22,7 +22,11 @@ let tokens = [];
 const operations = '/*-+=';
 
 function tokenize(event) {
-  if (event.target.nodeName.toLowerCase() !== 'button') {
+  if (
+    event.target.nodeName.toLowerCase() !== 'button' ||
+    event.target.id === 'clear' ||
+    event.target.id === 'backspace'
+  ) {
     return;
   }
   const token = event.target.textContent;
@@ -32,8 +36,7 @@ function tokenize(event) {
   }
 
   if (result !== null) {
-    result = null;
-    tokens = [];
+    clear();
     return;
   }
 
@@ -63,10 +66,10 @@ function tokenize(event) {
 
   console.log(tokens);
 
-  handleDisplay();
+  updateDisplay();
 }
 
-function handleDisplay(result) {
+function updateDisplay(result) {
   display.textContent = tokens.toString().replaceAll(',', ' ') + '_';
 
   if (result) {
@@ -129,5 +132,43 @@ function handleEquation() {
   });
   result = equation[0];
   tokens = [...equation];
-  handleDisplay(result);
+  updateDisplay(result);
+}
+
+const clearButton = document.querySelector('#clear');
+clearButton.addEventListener('click', () => {
+  clear();
+  clearDisplay();
+});
+
+function clear() {
+  tokens = [];
+  result = null;
+}
+
+function clearDisplay() {
+  display.textContent = '_';
+}
+
+const backspaceButton = document.querySelector('#backspace');
+backspaceButton.addEventListener('click', handleBackspace);
+
+function handleBackspace() {
+  if (tokens.length === 0) {
+    throw Error("there's nothing to remove!");
+  }
+
+  const lastIndex = tokens.length - 1;
+
+  if (tokens[lastIndex].toString().length === 1) {
+    tokens.pop();
+    updateDisplay();
+    return;
+  }
+
+  tokens[lastIndex] = tokens[lastIndex]
+    .toString()
+    .substring(0, tokens[lastIndex].toString().length - 1);
+
+  updateDisplay();
 }
